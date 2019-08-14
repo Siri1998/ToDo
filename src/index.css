@@ -1,13 +1,313 @@
+@import 'https://fonts.googleapis.com/css?family=Comfortaa:300,400,700&subset=cyrillic,cyrillic-ext,latin-ext';
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower&display=swap');
+
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background-color: whitesmoke;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+#root {
+    margin-top: 50px;
+}
+
+.todo-list {
+    background-color: white;
+    margin: auto;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #efefef;
+    box-shadow:
+        /* The top layer shadow */
+        0 1px 1px rgba(0, 0, 0, 0.15),
+        /* The second layer */
+        0 10px 0 -5px #eee,
+        /* The second layer shadow */
+        0 10px 1px -4px rgba(0, 0, 0, 0.15),
+        /* The third layer */
+        0 20px 0 -10px #eee,
+        /* The third layer shadow */
+        0 20px 1px -9px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+}
+
+.todo-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px 20px 0;
+    width: 70%;
+    border-bottom: 1px solid #cecece;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+}
+
+.todo-text {
+    color: #391552;
+    font-weight: 400;
+    margin: 0;
+    font-family: 'Indie Flower', cursive;
+}
+
+input[type=text] {
+    width: 50%;
+    padding: 0px 15px;
+    margin: 8px 0;
+    border: none;
+    border-bottom: 2px solid #28a745;
+    outline: none;
+    font-family: 'Indie Flower', cursive;
+    font-weight: 400;
+
+
+}
+
+.icon-btn {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #28a745;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+    transition: width 0.2s ease-in-out;
+}
+
+.add-btn:hover {
+    width: 120px;
+}
+
+.add-btn::before,
+.add-btn::after {
+    transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 4px;
+    width: 10px;
+    top: calc(50% - 2px);
+    background: #28a745;
+}
+
+.add-btn::after {
+    right: 14px;
+    overflow: hidden;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.add-btn::before {
+    left: 14px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.icon-btn:focus {
+    outline: none;
+}
+
+.btn-txt {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.add-btn:hover::before,
+.add-btn:hover::after {
+    width: 4px;
+    border-radius: 2px;
+}
+
+.add-btn:hover .btn-txt {
+    opacity: 1;
+}
+
+.add-icon::after,
+.add-icon::before {
+    transition: all 0.2s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 2px;
+    top: calc(50% - 10px);
+    background: #28a745;
+    overflow: hidden;
+}
+
+.add-icon::before {
+    left: 22px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.add-icon::after {
+    right: 22px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.add-btn:hover .add-icon::before {
+    left: 15px;
+    height: 4px;
+    top: calc(50% - 2px);
+}
+
+.add-btn:hover .add-icon::after {
+    right: 15px;
+    height: 4px;
+    top: calc(50% - 2px);
+}
+
+.switch_box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    max-width: 50px;
+    min-width: 50px;
+    height: 20px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+input[type="checkbox"].switch_1 {
+    font-size: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 3.5em;
+    height: 1.5em;
+    background: #ddd;
+    border-radius: 3em;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+input[type="checkbox"].switch_1:checked {
+    background: #28a745;
+}
+
+input[type="checkbox"].switch_1:after {
+    position: absolute;
+    content: "";
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: #fff;
+    -webkit-box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
+    box-shadow: 0 0 .25em rgba(0, 0, 0, .3);
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+    left: 0;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+input[type="checkbox"].switch_1:checked:after {
+    left: calc(100% - 1.5em);
+}
+
+.green button {
+    color: #28a745;
+    background: transparent;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #28a745;
+    position: relative;
+    margin: 1em;
+    display: inline-block;
+    padding: 0.5em 1em;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    font-family: comfortaa;
+    font-weight: bold
+}
+
+.green button:before,
+.green button:after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-color: #28a745;
+    box-sizing: border-box;
+    border-style: solid;
+    width: 1em;
+    height: 1em;
+    transition: all 0.3s ease-in-out
+}
+
+.green button:before {
+    top: -6px;
+    left: -6px;
+    border-width: 2px 0 0 2px;
+    z-index: 5
+}
+
+.green button:after {
+    bottom: -6px;
+    right: -6px;
+    border-width: 0 2px 2px 0
+}
+
+.green button:hover:before,
+.green button:hover:after {
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    border-color: #fff
+}
+
+.green button:hover {
+    color: #353535;
+    background-color: #fff;
+    border-color: #fff
+}
+
+.panel {
+    max-width: 960px;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    margin-top: 30px;
+}
+
+
+.green button {
+    color: #28a745;
+    border-color: #28a745
+}
+
+.green button:before,
+.green button:after {
+    border-color: #28a745
+}
+
+.green button:hover:before,
+.green button:hover:after {
+    border-color: #28a745;
+}
+
+.green button:hover {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.green .panel {
+    max-width: 960px;
+    text-align: center;
+    position: relative;
+    margin: auto;
 }
