@@ -3,6 +3,7 @@ import './App.css';
 import Item from "./Item";
 import todosData from "./todos-data";
 import axios from 'axios';
+import nothing from './nothing.png';
 
 class App extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class App extends Component {
         this.state = {
             todos: todosData,
             isCompletedState: 'all',
+            isLoading: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -34,7 +36,6 @@ class App extends Component {
 
     getAllTodo() {
         axios('https://8j1j8j187d.execute-api.eu-central-1.amazonaws.com/staging/todos').then(({ data: todos }) => {
-            console.log(todos)
             this.setState(state => ({
                 ...state,
                 todos
@@ -42,35 +43,38 @@ class App extends Component {
         })
     }
 
+    deleteTodoItem = id => {
+        axios.delete(`https://8j1j8j187d.execute-api.eu-central-1.amazonaws.com/staging/todos/${id}`).then(res => {
+            let todos = this.state.todos.filter(todo => {
+                return res.data.id !== todo.id;
+            })
+
+            this.setState({ todos })
+        })
+    }
+
     handleSubmit() {
 
         if (this.newTodo.value) {
-
+            this.setState({ isLoading: true })
             axios.post('https://8j1j8j187d.execute-api.eu-central-1.amazonaws.com/staging/todos', {
                 "id": this.getRandomId(),
                 "text": this.newTodo.value,
                 "completed": false
             }).then(response => {
+                this.newTodo.value = ""
                 this.setState({
                     todos: [
                         ...this.state.todos,
                         response.data
                     ]
                 })
+
+                this.setState({ isLoading: false });
+
             }).catch(function(error) {
                 console.log('sadasd')
             });
-            // let list = {
-            //     "id": this.getRandomId(),
-            //     "text": this.newTodo.value,
-            //     "completed": false
-            // }
-
-            // let todos = [...this.state.todos, list];
-
-            // this.newTodo.value = '';
-            // this.setState({ todos });
-            // this.createTodo(list);
         }
     }
 
@@ -83,9 +87,8 @@ class App extends Component {
     }
 
     render() {
-        console.log('0', this.state.todos)
 
-        const todoItems = this.state.todos.filter(todo => {
+        let todoItems = this.state.todos.filter(todo => {
             return this.state.isCompletedState === 'all' ||
                 (this.state.isCompletedState === 'complated' && todo.completed) ||
                 (this.state.isCompletedState === 'incomplated' && !todo.completed)
@@ -95,17 +98,30 @@ class App extends Component {
                     key={todo.id}
                     todo={todo}
                     handleChange={this.handleTodoChange}
+                    deleted={this.deleteTodoItem}
                 />
             );
         })
 
+        if (!todoItems.length) {
+            todoItems = <img src={nothing}/>
+        }
+
+        let button;
+        if (this.state.isLoading) {
+            button = <div className="loader">Loading...</div>;
+        } else {
+            button = <button className="icon-btn add-btn" onClick={this.handleSubmit}>
+                        <div className="add-icon"></div>
+                        <div className="btn-txt">Add</div>
+                    </button>;
+        }
+
+
         return (
             <div className="todo-list">
                 <input type="text" ref={(ref) => this.newTodo = ref}/>
-                <button className="icon-btn add-btn" onClick={this.handleSubmit}>
-                    <div className="add-icon"></div>
-                    <div className="btn-txt">Add</div>
-                </button>
+                {button}
                 {todoItems}
                 <div className="panel green">
                   <button onClick={() => this.setCompletedState('complated')}> Complated </button>
